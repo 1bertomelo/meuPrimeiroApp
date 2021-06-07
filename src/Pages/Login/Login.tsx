@@ -61,7 +61,7 @@ export default function Login() {
     }
 
     function navigateToNewStudent() {
-        navigation.navigate('Welcome');
+        navigation.navigate('NewStudent');
     }
     if (flLoading) {
         return (<Loading />);
