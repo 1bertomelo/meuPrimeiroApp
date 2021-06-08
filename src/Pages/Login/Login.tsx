@@ -15,7 +15,7 @@ import { LinkButton } from '../../Components/LinkButton/LinkButton';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface LoginProps {
-    login: string,
+    email: string,
     senha: string
 }
 
@@ -40,7 +40,7 @@ export default function Login() {
 
     async function navigateToHome() {
 
-        let objLogin: LoginProps = { login: txtLogin, senha: txtSenha };
+        let objLogin: LoginProps = { email: txtLogin, senha: txtSenha };
         if (txtLogin.trim() === '') {
             alert('Campo login é obrigatório');
             return;
@@ -50,12 +50,13 @@ export default function Login() {
             return;
         }
         setLoading(true);
-        const response = await api.post(`/login`, objLogin);
+        const response = await api.post(`/auth`, objLogin);
+        console.log(response.data);
         if (response.data.auth) {
             alert('Login e senha OK!');
         }
         else {
-            alert('Login e/ou senha inválidos');
+            alert(`${response.data.message}`);
         }
         setLoading(false);
     }

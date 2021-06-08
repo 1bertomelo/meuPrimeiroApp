@@ -2,7 +2,6 @@ import React from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import colors from '../styles/colors';
-import Page1 from '../Pages/Page1/Page1';
 import Welcome from '../Pages/Welcome/Welcome';
 import Login from '../Pages/Login/Login';
 import NewStudent from '../Pages/NewStudent/NewStudent';
@@ -28,10 +27,7 @@ const AppRoutes: React.FC = () => (
             name="Welcome"
             component={Welcome}
         />
-        <stackRoutes.Screen
-            name="Page1"
-            component={Page1}
-        />
+
         <stackRoutes.Screen
             name="NewStudent"
             component={NewStudent}
