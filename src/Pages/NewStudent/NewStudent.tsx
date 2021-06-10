@@ -3,7 +3,8 @@ import {
     TextInput,
     StyleSheet,
     Text,
-    View
+    View,
+    FlatList
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
@@ -16,15 +17,19 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface NewStudentProps {
-    name: string,
-    document: string,
+    nome: string,
+    cpf: string,
     email: string,
-    password: string
+    senha: string
 }
 
 interface PasswordConfig {
     flShowPass: boolean,
     iconPass: string
+}
+
+interface listErrors {
+    errors: string[];
 }
 
 export default function Login() {
@@ -42,6 +47,7 @@ export default function Login() {
     const [txtPasswordConfirm, setPasswordConfirm] = React.useState('')
     const navigation = useNavigation();
     const [flLoading, setLoading] = React.useState(false)
+    const [lstErrors, setListErrors] = React.useState<listErrors>({ errors: [] });
 
     function handleChangeIcon() {
         let icone = objPasswordConfig.iconPass === "eye" ? "eye-off" : "eye";
@@ -59,9 +65,9 @@ export default function Login() {
     async function handlePostNewStudent() {
 
         let objNewStudent: NewStudentProps = {
-            name: txtName,
-            password: txtPassword,
-            document: txtDocument,
+            nome: txtName,
+            senha: txtPassword,
+            cpf: txtDocument,
             email: txtEmail
         };
 
@@ -85,14 +91,14 @@ export default function Login() {
             alert('Senha e confirmar senha não conferem!');
             return;
         }
-
         setLoading(true);
-        const response = await api.post(`/aluno`, objNewStudent);
-        if (response.data.status === 201) {
-            alert('Student Posted!');
+        try {
+            const response = await api.post(`/aluno`, objNewStudent);
+            alert('Student Created!');
+            navigation.navigate('Home');
         }
-        else {
-            alert(`Error : ${response.data.error()}`);
+        catch (error) {
+            setListErrors({ errors: error.response.data.errors });
         }
         setLoading(false);
     }
@@ -170,6 +176,18 @@ export default function Login() {
             <LinkButton title='Voltar'
                 onPress={navigateToBack}
             />
+
+            <FlatList
+
+                data={lstErrors.errors}
+                keyExtractor={error => error}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item: itemError }) => (
+                    <Text>{itemError}</Text>
+
+                )}
+            />
+
         </SafeAreaView>
 
     );

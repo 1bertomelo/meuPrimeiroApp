@@ -3,7 +3,8 @@ import {
     TextInput,
     StyleSheet,
     Text,
-    View
+    View,
+    TouchableOpacityComponent
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
@@ -12,12 +13,14 @@ import { MyButton } from '../../Components/MyButton/MyButton';
 import colors from '../../styles/colors';
 import Loading from '../../Components/Loading/Loading';
 import { LinkButton } from '../../Components/LinkButton/LinkButton';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+
 
 interface LoginProps {
     email: string,
     senha: string
 }
+
 
 interface PasswordConfig {
     flShowPass: boolean,
@@ -93,6 +96,7 @@ export default function Login() {
                     onPress={handleChangeIcon}
                 />
             </View>
+
             <MyButton title='Entrar' onPress={navigateToHome}
 
             />
