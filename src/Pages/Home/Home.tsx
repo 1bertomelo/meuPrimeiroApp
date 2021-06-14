@@ -32,6 +32,7 @@ export default function Home() {
         },
     ]
 
+
     const [listVaccine, setLista] = useState<vaccineType[]>(vaccineTypeList);
 
     return (
