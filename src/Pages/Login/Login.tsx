@@ -13,6 +13,7 @@ import { MyButton } from '../../Components/MyButton/MyButton';
 import colors from '../../styles/colors';
 import Loading from '../../Components/Loading/Loading';
 import { LinkButton } from '../../Components/LinkButton/LinkButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -21,22 +22,27 @@ interface LoginProps {
     senha: string
 }
 
+enum nameOfIcons {
+    eye = 'eye',
+    eyeOff = 'eye-off'
+}
+
 
 interface PasswordConfig {
     flShowPass: boolean,
-    iconPass: string
+    iconPass: nameOfIcons
 }
 
 export default function Login() {
     const [objPasswordConfig, setConfigForm] = React.useState<PasswordConfig>
-        ({ flShowPass: false, iconPass: 'eye' });
+        ({ flShowPass: false, iconPass: nameOfIcons.eye });
     const [txtLogin, setLogin] = React.useState('')
     const [txtSenha, setSenha] = React.useState('')
     const navigation = useNavigation();
     const [flLoading, setLoading] = React.useState(false)
 
     function handleChangeIcon() {
-        let icone = objPasswordConfig.iconPass === "eye" ? "eye-off" : "eye";
+        let icone = objPasswordConfig.iconPass === nameOfIcons.eye ? nameOfIcons.eyeOff : nameOfIcons.eye;
         let flShowPass = !objPasswordConfig.flShowPass;
         setConfigForm({ iconPass: icone, flShowPass });
     }
@@ -53,14 +59,17 @@ export default function Login() {
             return;
         }
         setLoading(true);
-        const response = await api.post(`/auth`, objLogin);
-        console.log(response.data);
-        if (response.data.auth) {
-            alert('Login e senha OK!');
-        }
-        else {
-            alert(`${response.data.message}`);
-        }
+        /*    const response = await api.post(`/auth`, objLogin);
+            console.log(response.data);
+            if (response.data.auth) {
+                alert('Login e senha OK!');
+            }
+            else {
+                alert(`${response.data.message}`);
+            }*/
+
+        await AsyncStorage.setItem('@nomeApp:userName', txtLogin);
+        navigation.navigate('Home');
         setLoading(false);
     }
 

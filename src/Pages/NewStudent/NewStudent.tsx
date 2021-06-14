@@ -13,7 +13,7 @@ import { MyButton } from '../../Components/MyButton/MyButton';
 import colors from '../../styles/colors';
 import Loading from '../../Components/Loading/Loading';
 import { LinkButton } from '../../Components/LinkButton/LinkButton';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface NewStudentProps {
@@ -23,9 +23,16 @@ interface NewStudentProps {
     senha: string
 }
 
+//type nameOfIcons = 'eye' | 'eye-off'
+
+enum nameOfIcons {
+    eye = 'eye',
+    eyeOff = 'eye-off'
+}
+
 interface PasswordConfig {
     flShowPass: boolean,
-    iconPass: string
+    iconPass: nameOfIcons
 }
 
 interface listErrors {
@@ -34,10 +41,10 @@ interface listErrors {
 
 export default function Login() {
     const [objPasswordConfig, setConfigForm] = React.useState<PasswordConfig>
-        ({ flShowPass: false, iconPass: 'eye' });
+        ({ flShowPass: false, iconPass: nameOfIcons.eye });
 
     const [objPasswordConfirmConfig, setConfigConfirmForm] = React.useState<PasswordConfig>
-        ({ flShowPass: false, iconPass: 'eye' });
+        ({ flShowPass: false, iconPass: nameOfIcons.eye });
 
 
     const [txtName, setName] = React.useState('')
@@ -50,13 +57,13 @@ export default function Login() {
     const [lstErrors, setListErrors] = React.useState<listErrors>({ errors: [] });
 
     function handleChangeIcon() {
-        let icone = objPasswordConfig.iconPass === "eye" ? "eye-off" : "eye";
+        let icone = objPasswordConfig.iconPass === nameOfIcons.eye ? nameOfIcons.eyeOff : nameOfIcons.eye;
         let flShowPass = !objPasswordConfig.flShowPass;
         setConfigForm({ iconPass: icone, flShowPass });
     }
 
     function handleChangeIconConfirm() {
-        let icone = objPasswordConfirmConfig.iconPass === "eye" ? "eye-off" : "eye";
+        let icone = objPasswordConfirmConfig.iconPass === nameOfIcons.eye ? nameOfIcons.eyeOff : nameOfIcons.eye;
         let flShowPass = !objPasswordConfirmConfig.flShowPass;
         setConfigConfirmForm({ iconPass: icone, flShowPass });
     }

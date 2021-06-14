@@ -1,27 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
     View,
-    TextInput,
-    TouchableOpacity,
     SafeAreaView,
     KeyboardAvoidingView,
-    Platform
+    FlatList
 } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
-import { MyButton } from '../../Components/MyButton/MyButton';
+import { useNavigation, useRoute } from '@react-navigation/core';
+import Header from '../../Components/Header/Header';
+import colors from '../../styles/colors';
+import OptionButton from '../../Components/OptionButton/OptionButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+interface vaccineType {
+    title: string,
+    active: boolean
+}
 
 export default function Home() {
+    const navigation = useNavigation();
+
+    const vaccineTypeList: vaccineType[] = [
+        {
+            title: '1ª Dose COVID',
+            active: false
+        },
+        {
+            title: '2ª Dose COVID',
+            active: false
+        },
+    ]
+
+    const [listVaccine, setLista] = useState<vaccineType[]>(vaccineTypeList);
 
     return (
         <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView style={styles.container}>
-                <View style={styles.container}>
-                    <View style={styles.form}>
-                        <Text>Olá Bem vindo a HOME!</Text>
-                    </View>
+                <View style={styles.header}>
+                    <Header />
+                    <Text style={styles.question}>
+                        Qual a dose você vai solicitar?
+                    </Text>
+                </View>
+                <View style={styles.vaccineListCss}>
+                    <FlatList
+                        data={listVaccine}
+                        renderItem={({ item }) => (
+                            <OptionButton title={item.title} active />
+                        )}
+                        showsVerticalScrollIndicator={false}
+                        numColumns={2}
+                        contentContainerStyle={styles.itemVaccineCSS}
+                    />
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>
@@ -31,47 +62,19 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: colors.background
     },
-    form: {
-        flex: 1,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center'
+    header: {
+        paddingHorizontal: 20
     },
-    textInput: {
-        height: 40,
-        borderColor: 'gray',
-        borderRadius: 8,
-        borderWidth: 1,
-        width: '100%',
-        textAlign: 'center',
-        marginBottom: 16
+    question: {
+        fontSize: 17,
+        color: colors.heading
     },
-    buttonClickMe: {
-        marginTop: 16,
-        backgroundColor: 'red',
-        borderRadius: 8,
-        height: 50,
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center'
+    vaccineListCss: {
+
     },
-    textButtonClickMe: {
-        color: '#FFF',
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    imcObesidadeIII: {
-        color: 'red',
-        fontWeight: 'bold',
-        fontSize: 18
-    },
-    imcNormal: {
-        color: 'blue',
-        fontWeight: 'bold',
-        fontSize: 18
+    itemVaccineCSS: {
+
     }
 });
